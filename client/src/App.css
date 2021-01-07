@@ -1,0 +1,123 @@
+.home-container {
+  margin: 7% 0;
+  font-family: "Noto Sans JP", sans-serif;
+}
+@media only screen and (max-width: 1000px) {
+  .home-container {
+    margin: 10% 0;
+    font-family: "Noto Sans JP", sans-serif;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .home-container {
+    margin: 12% 0;
+    font-family: "Noto Sans JP", sans-serif;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .home-container {
+    margin: 17% 0;
+    font-family: "Noto Sans JP", sans-serif;
+  }
+}
+
+.home-sub-container h3 {
+  margin-top: 3%;
+  text-align: center;
+}
+
+.modal-container {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+.navbar-container {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+.navbar-container h3 {
+  font-weight: 550;
+}
+
+.image-container {
+  height: 350px;
+  position: relative;
+  background-color: rgb(189, 187, 187);
+  /* border: 3px solid green; */
+}
+
+.image-container h1 {
+  margin: 0;
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.image-container-reg {
+  height: 450px;
+  position: relative;
+  background-color: rgb(189, 187, 187);
+  /* border: 3px solid green; */
+}
+
+.image-container-reg h1 {
+  margin: 0;
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.card-container {
+  padding: 20px;
+  border: 1px solid rgb(206, 206, 206);
+  margin-bottom: 2%;
+}
+
+.card-container h4 {
+  font-weight: 500;
+}
+
+.card-container h5 {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.card-container h6 {
+  font-weight: 500;
+  color: rgb(95, 94, 94);
+}
+
+.card-container p {
+  font-size: 16px;
+  color: rgb(95, 94, 94);
+  font-weight: 500;
+}
+
+.ward-container h4 {
+  font-weight: 500;
+}
+
+.ward-container h5 {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.ward-container h6 {
+  font-weight: 500;
+  color: rgb(95, 94, 94);
+}
+
+.ward-container p {
+  font-size: 16px;
+  color: rgb(95, 94, 94);
+  font-weight: 500;
+}
