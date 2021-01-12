@@ -8,6 +8,7 @@ import {
   listPatients,
 } from "../../actions/PatientAction";
 import ErrorAlert from "../../misc/ErrorAlert";
+import PaginationButton from "../Layout/PaginationButton";
 import LoadingPage from "../Pages/LoadingPage";
 import PatientList from "./PatientList";
 
@@ -31,6 +32,8 @@ const PatientListPage = () => {
     "Under Observation",
   ]);
   const [roomTypes, setRoomTypes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultPerPage] = useState(5);
 
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
@@ -127,7 +130,26 @@ const PatientListPage = () => {
     dispatch(listPatients());
   };
 
-  const patientListData = patients.map((patient, i) => {
+  //Pagination
+  const indexOfLastResult = currentPage * resultPerPage;
+  const indexOfFirstResult = indexOfLastResult - resultPerPage;
+  const currentResult = patients.slice(indexOfFirstResult, indexOfLastResult);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const nextPage = () => {
+    if (currentPage < patients.length / resultPerPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const patientListData = currentResult.map((patient, i) => {
     return (
       <PatientList
         key={i}
@@ -186,6 +208,15 @@ const PatientListPage = () => {
           {patientListData}
         </table>
       </div>
+      <PaginationButton
+        PerPage={resultPerPage}
+        total={patients.length}
+        paginate={paginate}
+        currentPage={currentPage}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        perPageLength={currentResult.length}
+      />
       {modalVisible && (
         <Modal
           show={modalVisible}

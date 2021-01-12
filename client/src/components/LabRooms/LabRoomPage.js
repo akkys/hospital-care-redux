@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addRoom, deleteRoom, listRooms } from "../../actions/RoomAction";
 import ErrorAlert from "../../misc/ErrorAlert";
+import PaginationButton from "../Layout/PaginationButton";
 import LoadingPage from "../Pages/LoadingPage";
 import LabRoom from "./LabRoom";
 
@@ -24,6 +25,9 @@ const LabRoomPage = () => {
     "MRI",
     "X-Ray",
   ]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultPerPage] = useState(5);
+
   const roomList = useSelector((state) => state.roomList);
   const { rooms, loading } = roomList;
   const roomAdd = useSelector((state) => state.roomAdd);
@@ -89,7 +93,26 @@ const LabRoomPage = () => {
     dispatch(listRooms());
   };
 
-  const roomListData = rooms.map((room, i) => {
+  //Pagination
+  const indexOfLastResult = currentPage * resultPerPage;
+  const indexOfFirstResult = indexOfLastResult - resultPerPage;
+  const currentResult = rooms.slice(indexOfFirstResult, indexOfLastResult);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const nextPage = () => {
+    if (currentPage < rooms.length / resultPerPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const roomListData = currentResult.map((room, i) => {
     return (
       <LabRoom
         key={i}
@@ -144,6 +167,15 @@ const LabRoomPage = () => {
           </table>
         )}
       </div>
+      <PaginationButton
+        PerPage={resultPerPage}
+        total={rooms.length}
+        paginate={paginate}
+        currentPage={currentPage}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        perPageLength={currentResult.length}
+      />
       {modalVisible && (
         <Modal
           show={modalVisible}

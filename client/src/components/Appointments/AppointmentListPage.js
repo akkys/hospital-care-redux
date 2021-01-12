@@ -11,6 +11,7 @@ import LoadingPage from "../Pages/LoadingPage";
 import AppointmentList from "./AppointmentList";
 import ErrorAlert from "../../misc/ErrorAlert";
 import DeleteModal from "../../misc/DeleteModal";
+import PaginationButton from "../Layout/PaginationButton";
 
 const AppointmentListPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -26,6 +27,8 @@ const AppointmentListPage = () => {
   const [choose, setChoose] = useState("");
   const [docName, setDocName] = useState("");
   const [docts, setDocts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultPerPage] = useState(5);
 
   const appointmentList = useSelector((state) => state.appointmentList);
   const { appointments, loading } = appointmentList;
@@ -120,7 +123,29 @@ const AppointmentListPage = () => {
     dispatch(listAppointments());
   };
 
-  const appointmentListData = appointments.map((appointment, i) => {
+  //Pagination
+  const indexOfLastResult = currentPage * resultPerPage;
+  const indexOfFirstResult = indexOfLastResult - resultPerPage;
+  const currentResult = appointments.slice(
+    indexOfFirstResult,
+    indexOfLastResult
+  );
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const nextPage = () => {
+    if (currentPage < appointments.length / resultPerPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const appointmentListData = currentResult.map((appointment, i) => {
     return (
       <AppointmentList
         key={i}
@@ -176,6 +201,15 @@ const AppointmentListPage = () => {
           {appointmentListData}
         </table>
       </div>
+      <PaginationButton
+        PerPage={resultPerPage}
+        total={appointments.length}
+        paginate={paginate}
+        currentPage={currentPage}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        perPageLength={currentResult.length}
+      />
       {modalVisible && (
         <Modal
           show={modalVisible}
