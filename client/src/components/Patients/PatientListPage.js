@@ -32,13 +32,15 @@ const PatientListPage = () => {
     "Under Observation",
   ]);
   const [roomTypes, setRoomTypes] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredPatient, setFilteredPatient] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [resultPerPage] = useState(5);
 
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
   const patientList = useSelector((state) => state.patientList);
-  const { loading, patients, error } = patientList;
+  const { loading, patients } = patientList;
   const patientAdd = useSelector((state) => state.patientAdd);
   const { success: successSave, error: errorSave } = patientAdd;
   const dispatch = useDispatch();
@@ -46,7 +48,7 @@ const PatientListPage = () => {
   useEffect(() => {
     document.title = "Patients | A S K Hospitals";
     dispatch(listPatients());
-  }, []);
+  }, [dispatch]);
   console.log(patients);
 
   useEffect(() => {
@@ -75,6 +77,19 @@ const PatientListPage = () => {
     setPatientStatus(patientStatus.map((status) => status));
     setStatus(patientStatus[0]);
   }, []);
+
+  //Search filter
+  useEffect(() => {
+    setFilteredPatient(
+      patients.filter((patient) => {
+        return (
+          patient.pid.includes(search) ||
+          patient.contact.toLowerCase().includes(search.toLowerCase())
+        );
+      })
+    );
+  }, [search, patients]);
+  // console.log("Filter", filteredPatient);
 
   const openModal = (patient) => {
     if (patient._id) {
@@ -133,7 +148,10 @@ const PatientListPage = () => {
   //Pagination
   const indexOfLastResult = currentPage * resultPerPage;
   const indexOfFirstResult = indexOfLastResult - resultPerPage;
-  const currentResult = patients.slice(indexOfFirstResult, indexOfLastResult);
+  const currentResult = filteredPatient.slice(
+    indexOfFirstResult,
+    indexOfLastResult
+  );
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -156,6 +174,7 @@ const PatientListPage = () => {
         patient={patient}
         openModal={openModal}
         deleteHandler={deleteHandler}
+        filteredPatient={filteredPatient}
       />
     );
   });
@@ -171,8 +190,27 @@ const PatientListPage = () => {
               <h4>No Record!</h4>
             </div>
           ) : (
-            <div className="col-md-11 mb-3">
-              <h4>List of Patients</h4>
+            <div className="row">
+              <div className="col-md-8 mb-3">
+                <h4>List of Patients</h4>
+              </div>
+              <div className="col-md-4 mb-3">
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text" id="basic-addon1">
+                      <i className="fa fa-search fa-lg" />
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={search}
+                    name="search"
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search By PID Or Contact"
+                  />
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -180,13 +218,14 @@ const PatientListPage = () => {
           <div className="col-md-1">
             <button
               onClick={() => openModal({})}
-              className="btn btn-secondary btn-sm btn-block"
+              className="btn btn-secondary btn-md btn-block"
             >
               <strong>Add</strong>
             </button>
           </div>
         )}
       </div>
+
       <div className="container mt-3">
         <table className="table table-responsive">
           <thead className="thead-dark">
@@ -208,6 +247,7 @@ const PatientListPage = () => {
           {patientListData}
         </table>
       </div>
+
       <PaginationButton
         PerPage={resultPerPage}
         total={patients.length}

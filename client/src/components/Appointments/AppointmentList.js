@@ -41,7 +41,8 @@ const AppointmentList = (props) => {
         <td>
           <span>{appt.contact}</span>
           <br />
-          <span>{appt.email}</span>
+          {appt.email ? <span>{appt.email}</span> : <span>Not Mentioned</span>}
+          {/* <span>{appt.email}</span> */}
         </td>
         <td>
           {appt.address}, {appt.city}

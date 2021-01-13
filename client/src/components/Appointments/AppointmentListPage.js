@@ -27,6 +27,8 @@ const AppointmentListPage = () => {
   const [choose, setChoose] = useState("");
   const [docName, setDocName] = useState("");
   const [docts, setDocts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredAppt, setFilteredAppt] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [resultPerPage] = useState(5);
 
@@ -99,6 +101,18 @@ const AppointmentListPage = () => {
   }, []);
   //   console.log("Docs", docName);
 
+  useEffect(() => {
+    setFilteredAppt(
+      appointments.filter((appointment) => {
+        return (
+          appointment.contact.includes(search) ||
+          appointment.email.toLowerCase().includes(search.toLowerCase())
+        );
+      })
+    );
+  }, [search, appointments]);
+  console.log("Filter", filteredAppt);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const appointment = {
@@ -126,7 +140,7 @@ const AppointmentListPage = () => {
   //Pagination
   const indexOfLastResult = currentPage * resultPerPage;
   const indexOfFirstResult = indexOfLastResult - resultPerPage;
-  const currentResult = appointments.slice(
+  const currentResult = filteredAppt.slice(
     indexOfFirstResult,
     indexOfLastResult
   );
@@ -164,12 +178,31 @@ const AppointmentListPage = () => {
       <div className="row">
         <div className="col-md-11">
           {appointments.length === 0 ? (
-            <div className="col-md-11 mb-3">
+            <div className="col-md-9 mb-3">
               <h4>No Appointment Added!</h4>
             </div>
           ) : (
-            <div className="col-md-11 mb-3">
-              <h4>Appointment List</h4>
+            <div className="row">
+              <div className="col-md-8 mb-3">
+                <h4>Appointment List</h4>
+              </div>
+              <div className="col-md-4 mb-3">
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text" id="basic-addon1">
+                      <i className="fa fa-search fa-lg" />
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={search}
+                    name="search"
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search By Contact Or Email"
+                  />
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -177,7 +210,7 @@ const AppointmentListPage = () => {
         <div className="col-md-1">
           <button
             onClick={() => openModal({})}
-            className="btn btn-secondary btn-sm btn-block"
+            className="btn btn-secondary btn-md btn-block"
           >
             <strong>Add</strong>
           </button>
@@ -190,7 +223,7 @@ const AppointmentListPage = () => {
               <th scope="col"></th>
               <th scope="col">Date</th>
               <th scope="col">Name</th>
-              <th scope="col">Contact</th>
+              <th scope="col">Contact & Email</th>
               <th scope="col">Address</th>
               <th scope="col">Doctor</th>
               <th scope="col">Type</th>

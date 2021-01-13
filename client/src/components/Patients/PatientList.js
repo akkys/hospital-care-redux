@@ -1,14 +1,13 @@
 import React from "react";
 
 const PatientList = (props) => {
-  const { patient, openModal, deleteHandler } = props;
+  const { patient, openModal, deleteHandler, filteredPatient } = props;
   console.log(patient);
 
   const admitDate = new Date(patient.admitDate).toLocaleString();
   return (
     <tbody>
       <tr>
-        {" "}
         <td>
           <i
             onClick={() => openModal(patient)}
