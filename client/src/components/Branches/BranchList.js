@@ -4,7 +4,7 @@ const BranchList = (props) => {
   const { branch, openModal, deleteHandler, userInfo } = props;
   return (
     <div className="col-md-6 mb-3 mt-3">
-      <div className="card border-primary text-dark bg-light mb-3 ">
+      <div className="card border-secondary text-dark bg-light mb-3 ">
         <div className="card-body mt-3">
           <div className="row m-auto">
             <div className="col-md-1">

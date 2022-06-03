@@ -2,12 +2,8 @@ import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
 const DeleteModal = (props) => {
-  const {
-    data,
-    deleteHandler,
-    deleteModalVisible,
-    setDeleteModalVisible,
-  } = props;
+  const { data, deleteHandler, deleteModalVisible, setDeleteModalVisible } =
+    props;
   return (
     <Modal
       show={deleteModalVisible}
@@ -19,8 +15,7 @@ const DeleteModal = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="">
-        This appointment will be deleted permanently. Are you sure? <br />{" "}
-        Please
+        This will be deleted permanently. Are you sure? <br /> Please
         <code> Confirm </code>to Delete.
       </Modal.Body>
       <Modal.Footer>

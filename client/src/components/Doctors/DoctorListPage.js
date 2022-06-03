@@ -7,6 +7,7 @@ import {
   deleteDoctor,
 } from "../../actions/DoctorAction";
 import ErrorAlert from "../../misc/ErrorAlert";
+import PageHeader from "../Layout/PageHeader";
 import LoadingPage from "../Pages/LoadingPage";
 import DoctorList from "./DoctorList";
 
@@ -90,6 +91,10 @@ const DoctorListPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const doctor = {
@@ -127,29 +132,11 @@ const DoctorListPage = () => {
     <LoadingPage />
   ) : (
     <div className="home-container container">
-      <div className="row">
-        <div className="col-md-11">
-          {doctors.length === 0 ? (
-            <div className="col-md-11 mb-3">
-              <h2>No Record!</h2>
-            </div>
-          ) : (
-            <div className="col-md-11 mb-3">
-              <h4>List of Doctors available in our Hospital</h4>
-            </div>
-          )}
-        </div>
-        {userInfo && (
-          <div className="col-md-1">
-            <button
-              onClick={() => openModal({})}
-              className="btn btn-secondary btn-sm btn-block"
-            >
-              <strong>Add</strong>
-            </button>
-          </div>
-        )}
-      </div>
+      <PageHeader
+        data={doctors}
+        fullTitle="List of Doctors available in our Hospital"
+        openModal={openModal}
+      />
       <div className="row mt-3">
         <div className="container ">
           <div className="row">{doctorsListData}</div>
@@ -263,7 +250,13 @@ const DoctorListPage = () => {
                 type="submit"
                 className="btn btn-primary mt-5 float-right"
               >
-                {!id ? "Add" : "Update"}
+                {!id ? "Save" : "Update"}
+              </button>
+              <button
+                className="btn btn-secondary mt-5 mr-3 float-right"
+                onClick={closeModal}
+              >
+                Cancel
               </button>
             </form>
           </Modal.Body>

@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addWard, deleteWard, listWards } from "../../actions/WardAction";
 import ErrorAlert from "../../misc/ErrorAlert";
+import PageHeader from "../Layout/PageHeader";
 import LoadingPage from "../Pages/LoadingPage";
 import WardList from "./WardList";
 
@@ -52,6 +53,10 @@ const WardsListPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const ward = {
@@ -84,29 +89,7 @@ const WardsListPage = () => {
     <LoadingPage />
   ) : (
     <div className="home-container container">
-      <div className="row">
-        <div className="col-md-11">
-          {wards.length === 0 ? (
-            <div className="col-md-11 mb-3">
-              <h4>No Record!</h4>
-            </div>
-          ) : (
-            <div className="col-md-11 mb-3">
-              <h4>List of Wards</h4>
-            </div>
-          )}
-        </div>
-        {userInfo && (
-          <div className="col-md-1">
-            <button
-              onClick={() => openModal({})}
-              className="btn btn-secondary btn-sm btn-block"
-            >
-              <strong>Add</strong>
-            </button>
-          </div>
-        )}
-      </div>
+      <PageHeader data={wards} title="Wards" openModal={openModal} />
       <div className="row">{wardsListData}</div>
       {modalVisible && (
         <Modal
@@ -165,6 +148,12 @@ const WardsListPage = () => {
                 className="btn btn-primary mt-5 float-right"
               >
                 {!id ? "Add" : "Update"}
+              </button>
+              <button
+                className="btn btn-secondary mt-5 mr-3 float-right"
+                onClick={closeModal}
+              >
+                Cancel
               </button>
             </form>
           </Modal.Body>

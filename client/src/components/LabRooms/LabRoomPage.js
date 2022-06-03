@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addRoom, deleteRoom, listRooms } from "../../actions/RoomAction";
 import ErrorAlert from "../../misc/ErrorAlert";
+import PageHeader from "../Layout/PageHeader";
 import PaginationButton from "../Layout/PaginationButton";
 import LoadingPage from "../Pages/LoadingPage";
 import LabRoom from "./LabRoom";
@@ -127,28 +128,11 @@ const LabRoomPage = () => {
     <LoadingPage />
   ) : (
     <div className="home-container container">
-      <div className="row">
-        <div className="col-md-11">
-          {rooms.length === 0 ? (
-            <div className="col-md-11 mb-3">
-              <h2>No Record!</h2>
-            </div>
-          ) : (
-            <div className="col-md-11 mb-3">
-              <h4>List of Labs available in our Hospital</h4>
-            </div>
-          )}
-        </div>
-
-        <div className="col-md-1">
-          <button
-            onClick={() => openModal({})}
-            className="btn btn-secondary btn-sm btn-block"
-          >
-            <strong>Add</strong>
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        data={rooms}
+        fullTitle="List of Labs available in our Hospital"
+        openModal={openModal}
+      />
       <div className="container mt-3">
         {rooms.length > 0 && (
           <table className="table table-responsive-lg">

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import AppointmentDetails from "./AppointmentDetails";
 
 const AppointmentList = (props) => {
   const { appt, openModal, openDeleteModal } = props;
+
+  const [showApptDetailModal, setShowApptDetailModal] = useState(false);
 
   const currTime = new Date().toLocaleString("en-US", {
     year: "numeric",
@@ -21,49 +24,57 @@ const AppointmentList = (props) => {
     hour12: true,
   });
 
+  const openApptDetailModal = () => {
+    setShowApptDetailModal(true);
+  };
+
+  const closeApptDetailModal = () => {
+    setShowApptDetailModal(false);
+  };
+
+  const apptDetailModal = () => {
+    return (
+      <AppointmentDetails
+        showApptDetailModal={showApptDetailModal}
+        setShowApptDetailModal={setShowApptDetailModal}
+        closeApptDetailModal={closeApptDetailModal}
+        appt={appt}
+        time={time}
+        openDeleteModal={openDeleteModal}
+      />
+    );
+  };
+
   return (
     <tbody>
       <tr className="table-active">
         <td>
           <i
             onClick={() => openModal(appt)}
-            className="fa fa-square-o"
+            className="fa fa-pencil"
             style={{ cursor: "pointer" }}
           />
         </td>
         <td className="">{time}</td>
-        <td
-          onClick={() => openModal(appt)}
-          style={{ color: "green", cursor: "pointer" }}
-        >
-          {appt.name}
-        </td>
+        <td>{appt.name}</td>
         <td>
           <span>{appt.contact}</span>
-          <br />
-          {appt.email ? <span>{appt.email}</span> : <span>Not Mentioned</span>}
-          {/* <span>{appt.email}</span> */}
         </td>
-        <td>
-          {appt.address}, {appt.city}
-        </td>
-        <td>{appt.docName}</td>
-
         <td>{appt.choose}</td>
         {time >= currTime ? (
           <td className="">Pending</td>
         ) : (
           <td className="text-danger">Completed / Expired</td>
-        )}
-        <td style={{ cursor: "pointer", textAlign: "center" }}>
-          <small
-            onClick={() => openDeleteModal(appt._id)}
-            className="text-danger"
-          >
-            <i className="fa fa-times fa-lg" />
-          </small>
+        )}{" "}
+        <td
+          onClick={openApptDetailModal}
+          className="btn-link"
+          style={{ cursor: "pointer" }}
+        >
+          More Info
         </td>
       </tr>
+      {apptDetailModal()}
     </tbody>
   );
 };

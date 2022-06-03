@@ -1,47 +1,95 @@
-import React from "react";
+import React, { useState } from "react";
 import img from "../../img/doc.png";
+import DeleteModal from "../../misc/DeleteModal";
+import DocDetails from "./DocDetails";
 
 const DoctorList = (props) => {
   const { docs, userInfo, openModal, deleteHandler } = props;
+
+  const [showDocDetails, setShowDocDetails] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+
+  const handleDocModal = () => {
+    setShowDocDetails(true);
+  };
+
+  const closeDocModal = () => {
+    setShowDocDetails(false);
+  };
+
+  const openDeleteModal = () => {
+    setDeleteModal(true);
+  };
+
+  const docDetailModal = () => {
+    return (
+      <DocDetails
+        docDetailModal={docDetailModal}
+        closeDocModal={closeDocModal}
+        docs={docs}
+        img={img}
+        showDocDetails={showDocDetails}
+        setShowDocDetails={setShowDocDetails}
+      />
+    );
+  };
+
   return (
     <>
-      <div className="col-md-6 mb-3 mt-3 card-container">
-        <div className="row no-gutters">
-          <div className="col-md-3">
-            <img src={img} className="card-img" alt="..." />
+      {/* Delete Modal  */}
+      {deleteModal && (
+        <DeleteModal
+          deleteHandler={deleteHandler}
+          data={docs}
+          deleteModalVisible={deleteModal}
+          setDeleteModalVisible={setDeleteModal}
+        />
+      )}
+
+      <div className="col-md-3 mb-3 mt-3 card-container">
+        <div className="card border-secondary text-dark bg-light mb-3 ">
+          <div className="row">
+            <img src={img} className="card-img-top" alt="..." />
           </div>
-          <div className="col-md-9">
-            <div className="card-body">
-              <h4 className="card-title">
-                {docs.name}{" "}
-                {userInfo && (
-                  <i
-                    onClick={() => openModal(docs)}
-                    className="fa fa-pencil-square-o float-right text-success"
-                  />
-                )}
-              </h4>
-              <p className="card-text">Experience : {docs.exp} Year(s)</p>
-              <h5 className="card-title">Specialist in : {docs.expert}</h5>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="card-body">
+                <h5 className="card-title">
+                  Dr. {docs.name}
+                  {userInfo && (
+                    <i
+                      onClick={() => openModal(docs)}
+                      className="fa fa-pencil-square-o float-right text-success"
+                    />
+                  )}
+                </h5>
+                <h6 className="card-text">Experience : {docs.exp} Year(s)</h6>
+                <h6 className="card-text">Specialist in : {docs.expert}</h6>
+                <h6>Contact : {docs.contact}</h6>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="card-body">
-          <h6>Available at : {docs.available}</h6>
-          <h6>
-            Duty Timings: {docs.time}
-            {""} Hrs.
-          </h6>
-          <h6>Contact : {docs.contact}</h6>
-          <p className="card-text">About: {docs.desc}</p>
-          {userInfo && (
-            <i
-              onClick={() => deleteHandler(docs)}
-              className="fa fa-trash fa-lg float-right text-danger"
-            />
-          )}
+          <div className="card-body">
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={handleDocModal}
+            >
+              Know More...
+            </button>
+            {userInfo && (
+              <i
+                onClick={openDeleteModal}
+                className="fa fa-trash fa-lg float-right text-danger"
+                style={{
+                  marginLeft: "95%",
+                  fontSize: "23px",
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
+      {docDetailModal()}
     </>
   );
 };

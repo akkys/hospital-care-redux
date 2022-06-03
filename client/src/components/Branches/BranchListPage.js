@@ -7,6 +7,7 @@ import {
   listBranches,
 } from "../../actions/BranchAction";
 import ErrorAlert from "../../misc/ErrorAlert";
+import PageHeader from "../Layout/PageHeader";
 import LoadingPage from "../Pages/LoadingPage";
 import BranchList from "./BranchList";
 
@@ -90,29 +91,7 @@ const BranchListPage = () => {
     <LoadingPage />
   ) : (
     <div className="home-container container">
-      <div className="row">
-        <div className="col-md-11">
-          {branches.length === 0 ? (
-            <div className="col-md-11 mb-3">
-              <h4>No Branches Added!</h4>
-            </div>
-          ) : (
-            <div className="col-md-11 mb-3">
-              <h4>Braches List</h4>
-            </div>
-          )}
-        </div>
-        {userInfo && (
-          <div className="col-md-1">
-            <button
-              onClick={() => openModal({})}
-              className="btn btn-secondary btn-sm btn-block"
-            >
-              <strong>Add</strong>
-            </button>
-          </div>
-        )}
-      </div>
+      <PageHeader data={branches} title="Branches" openModal={openModal} />
       {modalVisible && (
         <Modal
           show={modalVisible}

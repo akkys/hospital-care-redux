@@ -12,9 +12,11 @@ import AppointmentList from "./AppointmentList";
 import ErrorAlert from "../../misc/ErrorAlert";
 import DeleteModal from "../../misc/DeleteModal";
 import PaginationButton from "../Layout/PaginationButton";
+import PageHeader from "../Layout/PageHeader";
 
 const AppointmentListPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
+
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [id, setId] = useState("");
   const [name, setName] = useState("");
@@ -50,7 +52,6 @@ const AppointmentListPage = () => {
       setDatetime(appointment.datetime);
       setChoose(appointment.choose);
       setDocName(appointment.docName);
-      //   setDocts(appointment.docts);
     } else {
       setModalVisible(true);
       setId();
@@ -63,7 +64,6 @@ const AppointmentListPage = () => {
       setDatetime();
       setChoose();
       setDocName();
-      //   setDocts([]);
     }
   };
 
@@ -77,7 +77,6 @@ const AppointmentListPage = () => {
     document.title = "Appointments | A S K Hospitals";
     dispatch(listAppointments());
   }, [dispatch]);
-  //   console.log("Appt", appointments);
 
   useEffect(() => {
     if (successSave) {
@@ -99,7 +98,6 @@ const AppointmentListPage = () => {
     }
     getDocNames();
   }, []);
-  //   console.log("Docs", docName);
 
   useEffect(() => {
     setFilteredAppt(
@@ -175,65 +173,34 @@ const AppointmentListPage = () => {
     <LoadingPage />
   ) : (
     <div className="home-container container">
-      <div className="row">
-        <div className="col-md-11">
-          {appointments.length === 0 ? (
-            <div className="col-md-9 mb-3">
-              <h4>No Appointment Added!</h4>
-            </div>
-          ) : (
-            <div className="row">
-              <div className="col-md-8 mb-3">
-                <h4>Appointment List</h4>
-              </div>
-              <div className="col-md-4 mb-3">
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text" id="basic-addon1">
-                      <i className="fa fa-search fa-lg" />
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={search}
-                    name="search"
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search By Contact Or Email"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+      <PageHeader
+        data={appointments}
+        title="Appointments"
+        openModal={openModal}
+        search={search}
+        setSearch={setSearch}
+      />
+      {currentResult.length === 0 ? (
+        <h4>Search result : {currentResult.length}</h4>
+      ) : (
+        <div className="container mt-3">
+          {search && <h4>Search result : {currentResult.length}</h4>}
+          <table className="table table-responsive-lg">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Date</th>
+                <th scope="col">Name</th>
+                <th scope="col">Contact & Email</th>
+                <th scope="col">Type</th>
+                <th scope="col">Status</th>
+                <th scope="col">Info</th>
+              </tr>
+            </thead>
+            {appointmentListData}
+          </table>
         </div>
-
-        <div className="col-md-1">
-          <button
-            onClick={() => openModal({})}
-            className="btn btn-secondary btn-md btn-block"
-          >
-            <strong>Add</strong>
-          </button>
-        </div>
-      </div>
-      <div className="container mt-3">
-        <table className="table table-responsive-lg">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Date</th>
-              <th scope="col">Name</th>
-              <th scope="col">Contact & Email</th>
-              <th scope="col">Address</th>
-              <th scope="col">Doctor</th>
-              <th scope="col">Type</th>
-              <th scope="col">Status</th>
-              <th scope="col">Remove</th>
-            </tr>
-          </thead>
-          {appointmentListData}
-        </table>
-      </div>
+      )}
       <PaginationButton
         PerPage={resultPerPage}
         total={appointments.length}

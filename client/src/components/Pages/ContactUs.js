@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 const ContactUs = () => {
   useEffect(() => {
-    document.title = "Contact Us | A S K Hospitals";
+    document.title = "Contact Us | A S K Hospital";
   });
   return (
     <div className="container home-container mb-5">

@@ -3,7 +3,7 @@ import image from "../../img/ambulance.jpg";
 
 const AmbulanceService = () => {
   useEffect(() => {
-    document.title = "Ambulance Service | A S K Hospitals";
+    document.title = "Ambulance Service | A S K Hospital";
   });
   return (
     <div className="container home-container">

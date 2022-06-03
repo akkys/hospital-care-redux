@@ -3,7 +3,7 @@ import ImageCarousel from "./ImageCarousel";
 
 const HomePage = () => {
   useEffect(() => {
-    document.title = "Home | A S K Hospitals";
+    document.title = "Home | A S K Hospital";
   });
   return (
     <div className="home-container container">

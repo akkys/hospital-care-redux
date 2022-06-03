@@ -8,6 +8,7 @@ import {
   listPatients,
 } from "../../actions/PatientAction";
 import ErrorAlert from "../../misc/ErrorAlert";
+import PageHeader from "../Layout/PageHeader";
 import PaginationButton from "../Layout/PaginationButton";
 import LoadingPage from "../Pages/LoadingPage";
 import PatientList from "./PatientList";
@@ -183,70 +184,39 @@ const PatientListPage = () => {
     <LoadingPage />
   ) : (
     <div className="home-container container">
-      <div className="row">
-        <div className="col-md-11">
-          {patients.length === 0 ? (
-            <div className="col-md-11 mb-3">
-              <h4>No Record!</h4>
-            </div>
-          ) : (
-            <div className="row">
-              <div className="col-md-8 mb-3">
-                <h4>List of Patients</h4>
-              </div>
-              <div className="col-md-4 mb-3">
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text" id="basic-addon1">
-                      <i className="fa fa-search fa-lg" />
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={search}
-                    name="search"
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search By PID Or Contact"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+      <PageHeader
+        data={patients}
+        title="Patients"
+        openModal={openModal}
+        search={search}
+        setSearch={setSearch}
+      />
+      {currentResult.length === 0 ? (
+        <h4>Search result : {currentResult.length}</h4>
+      ) : (
+        <div className="container mt-3">
+          {search && <h4>Search result : {currentResult.length}</h4>}
+          <table className="table table-responsive-lg">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">PID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Admission Date</th>
+                <th scope="col">Room No.</th>
+                {/* <th scope="col">Room Type</th> */}
+                {/* <th scope="col">Age</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Address</th>
+                <th scope="col">Contact</th> */}
+                <th scope="col">Status</th>
+                <th scope="col">More</th>
+              </tr>
+            </thead>
+            {patientListData}
+          </table>
         </div>
-        {userInfo && (
-          <div className="col-md-1">
-            <button
-              onClick={() => openModal({})}
-              className="btn btn-secondary btn-md btn-block"
-            >
-              <strong>Add</strong>
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="container mt-3">
-        <table className="table table-responsive">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">PID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Admission Date</th>
-              <th scope="col">Room No.</th>
-              <th scope="col">Room Type</th>
-              <th scope="col">Age</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Address</th>
-              <th scope="col">Contact</th>
-              <th scope="col">Status</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          {patientListData}
-        </table>
-      </div>
+      )}
 
       <PaginationButton
         PerPage={resultPerPage}
